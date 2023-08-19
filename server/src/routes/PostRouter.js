@@ -4,7 +4,7 @@ import { UserModel } from "../models/Users.js";
 import { verifyToken } from "../routes/UserRouter.js";
 
 const router = express.Router();
-router.get("/",verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await PostModel.find({});
     res.status(200).json(result);
@@ -13,7 +13,7 @@ router.get("/",verifyToken, async (req, res) => {
   }
 });
 // Create a new post
-router.post("/",verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   const { title, post, author,owner } = req.body;
   const authorname=await UserModel.findOne({_id:author});
   console.log(title + "" + post + "" + author);
