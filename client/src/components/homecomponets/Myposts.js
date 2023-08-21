@@ -16,7 +16,7 @@ function Myposts() {
        
       ];
       const [featuredPosts,setfeaturedPosts]=React.useState([]);
-      const [c,setc]=React.useState(1);
+      const [c,setc]=React.useState();
       const[cookies,_]=useCookies("[access_token]");
 
     
@@ -41,14 +41,17 @@ function Myposts() {
         }
         
         fetchingArray();
-      },c);
+        return()=>{
+      
+        }
+      },[c]);
       const home=false;
 
   return (
     <>
     <Header title=" Quotes Blog" sections={sections}/>
     {featuredPosts.map((item) => (
-              <SinglePost key={item.title} item={item} home={home} />
+              <SinglePost key={item.title} item={item} home={home} savedPosts={featuredPosts} setc={setc} />
             ))}
     </>
   )

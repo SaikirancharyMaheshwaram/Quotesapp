@@ -7,11 +7,12 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BASE_URL } from "../../helper";
 
-function SinglePost({ item, home }) {
+function SinglePost({ item, home,savedPosts,setc }) {
   const navigate = useNavigate();
   const date = new Date(item.date);
-  const [c, setc] = useState(1);
-  const [savedPosts, setSavedPosts] = useState([]);
+  const [c, setcc] = useState(1);
+  const [cc, setccc] = useState(1);
+  //const [savedPosts, setSavedPosts] = useState([]);
   const [featuredPosts, setfeaturedPosts] = React.useState([]);
   const formattedDate = date.toLocaleDateString("en-GB");
   const handleDelete = async (id) => {
@@ -20,7 +21,12 @@ function SinglePost({ item, home }) {
       `${BASE_URL}/posts/delete/${id}`
     );
     alert(item.title + "deleted Successfully");
+
     console.log(respone);
+    
+    setc(cc+1);
+    setccc(cc+1);
+    
   };
   const handleEdit = (id) => {
     window.localStorage.setItem("postId", id);

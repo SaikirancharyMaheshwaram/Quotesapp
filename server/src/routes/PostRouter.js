@@ -93,6 +93,9 @@ router.post("/savepost", async (req, res) => {
     res.status(500).json("problem");
   }
 });
+//unsaving the post
+router.post("/unsavepost",async)
+
 //getting the saved fav posts
 
 router.get("/myfav/:userid", async (req, res) => {

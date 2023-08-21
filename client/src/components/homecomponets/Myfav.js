@@ -38,14 +38,14 @@ function Myfav() {
       
         }
         fetchingArray();
-      },[]);
+      },[c]);
       const home=true;
 
   return (
     <>
     <Header title=" Quotes Blog" sections={sections}/>
     {featuredPosts.map((item) => (
-              <SinglePost key={item._id} item={item} home={home}  />
+              <SinglePost key={item._id} item={item} home={home} savedPosts={featuredPosts}  />
             ))}
     </>
   )
