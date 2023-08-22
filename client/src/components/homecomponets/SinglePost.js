@@ -6,10 +6,12 @@ import { useNavigate,Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BASE_URL } from "../../helper";
+import { Cookies, useCookies } from "react-cookie";
 
 function SinglePost({ item, home,savedPosts,setc,setSavedPosts }) {
   const navigate = useNavigate();
   const date = new Date(item.date);
+  const [cookies, _] = useCookies("[access_token]");
 
 
   //const [savedPosts, setSavedPosts] = useState([]);
@@ -18,7 +20,8 @@ function SinglePost({ item, home,savedPosts,setc,setSavedPosts }) {
   const handleDelete = async (id) => {
     console.log(id);
     const respone = await axios.delete(
-      `${BASE_URL}/posts/delete/${id}`
+      `${BASE_URL}/posts/delete/${id}`,{
+        headers: { authorization: cookies.access_token }}
     );
     alert(item.title + "deleted Successfully");
 

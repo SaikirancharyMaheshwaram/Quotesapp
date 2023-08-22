@@ -4,7 +4,7 @@ import { UserModel } from "../models/Users.js";
 import { verifyToken } from "../routes/UserRouter.js";
 
 const router = express.Router();
-router.get("/", async (req, res) => {
+router.get("/",verifyToken, async (req, res) => {
   try {
     const result = await PostModel.find({});
     res.status(200).json(result);
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 // Create a new post
-router.post("/", async (req, res) => {
+router.post("/",verifyToken, async (req, res) => {
   const { title, post, author,owner } = req.body;
   const authorname=await UserModel.findOne({_id:author});
   console.log(title + "" + post + "" + author);
@@ -39,14 +39,14 @@ router.post("/", async (req, res) => {
   }
 
 });
-router.get("/:postid",async(req,res)=>{
+router.get("/:postid",verifyToken,async(req,res)=>{
   const postId = req.params.postid;
   //console.log(postId);
   const response=await PostModel.findById(postId);
   res.status(200).json(response);
 })
 
-router.delete("/delete/:postid",async(req,res)=>{
+router.delete("/delete/:postid",verifyToken,async(req,res)=>{
   const postId = req.params.postid;
   console.log(postId);
   const deletedPost = await PostModel.findByIdAndDelete(postId);
@@ -72,7 +72,7 @@ router.patch("/update/:postid",async (req,res)=>{
 });
 
 
-router.get("/myposts/:userid",async(req,res)=>{
+router.get("/myposts/:userid",verifyToken,async(req,res)=>{
   const userid=req.params.userid;
   console.log(userid);
   const result=await PostModel.find({owner:{$in:userid}});
@@ -117,7 +117,7 @@ router.post("/unsavepost",async(req,res)=>{
 
 //getting the saved fav posts
 
-router.get("/myfav/:userid", async (req, res) => {
+router.get("/myfav/:userid",verifyToken, async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.userid);
     const favs = await PostModel.find({

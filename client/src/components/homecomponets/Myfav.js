@@ -28,7 +28,8 @@ function Myfav() {
             try {
                // const userId=window.localStorage.getItem("userid");
                 const featuredPostss=await axios.get(`${BASE_URL}/posts/myfav/${window.localStorage.getItem("userid")}`
-                );
+                ,{
+                  headers: { authorization: cookies.access_token }});
                 console.log(featuredPostss.data.favs);
                 setfeaturedPosts(featuredPostss.data.favs.slice().reverse());
                 

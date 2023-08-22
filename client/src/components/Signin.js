@@ -3,9 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-// import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -22,7 +19,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" to={"#"}>
+      <Link color="inherit" to={"https://github.com/SaikirancharyMaheshwaram"}>
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -46,17 +43,31 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
-    const response=await axios.post(`${BASE_URL}/auth/login`,{
+    
+    
+    try {  
+      const response=await axios.post(`${BASE_URL}/auth/login`,{
         email:data.get('email'),
         password:data.get('password')
-    })
-    Setcookie("access_token",response.data.token);
-    window.localStorage.setItem("userid",response.data.Userid);
-    window.localStorage.setItem("name",response.data.name);
+    })  
     
-    console.log(response);
-    alert(response.data.message);
-    navigate("/home");
+      if(response.data.Userid){
+        Setcookie("access_token",response.data.token);
+        window.localStorage.setItem("userid",response.data.Userid);
+        window.localStorage.setItem("name",response.data.name);
+        alert(response.data.message);
+        navigate("/home");
+        }  
+        
+    } catch (response) {
+      alert("Incorect Password or Username");
+
+
+    }
+    
+    
+    
+    
     
   };
 
@@ -115,10 +126,7 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+             
               <Button
                 type="submit"
                 fullWidth

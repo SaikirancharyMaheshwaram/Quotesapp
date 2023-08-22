@@ -35,13 +35,17 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res.status(201).json({ message: "User Not Exists" });
   }
-  const isValid = bcrypt.compare(password, user.password);
+  const isValid = await bcrypt.compare(password, user.password);
+  console.log(isValid);
   if (!isValid) {
+    console.log("dddd");
     return res
       .status(400)
       .json({ message: "Username or password is incorrect" });
   }
-  console.log("User loggedin");
+  console.log("here");
+
+  // console.log("User loggedin");
   const token=jwt.sign({id:user._id},process.env.SECRET);
   res.json({token,Userid:user._id,name:user.username,message:`${user.username} succesfullly logged in`});
 });
