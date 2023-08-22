@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./SinglePost.css";
 //import { Button } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BASE_URL } from "../../helper";
 
-function SinglePost({ item, home,savedPosts,setc }) {
+function SinglePost({ item, home,savedPosts,setc,setSavedPosts }) {
   const navigate = useNavigate();
   const date = new Date(item.date);
-  const [c, setcc] = useState(1);
-  const [cc, setccc] = useState(1);
+
+
   //const [savedPosts, setSavedPosts] = useState([]);
-  const [featuredPosts, setfeaturedPosts] = React.useState([]);
+
   const formattedDate = date.toLocaleDateString("en-GB");
   const handleDelete = async (id) => {
     console.log(id);
@@ -23,55 +23,16 @@ function SinglePost({ item, home,savedPosts,setc }) {
     alert(item.title + "deleted Successfully");
 
     console.log(respone);
-    
-    setc(cc+1);
-    setccc(cc+1);
-    
+    setc(id); 
   };
   const handleEdit = (id) => {
     window.localStorage.setItem("postId", id);
+    
+  
     navigate("/updatepost");
   };
-  //fetching the saved posts
-
-  // const fetchSavedPosts = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3500/posts/myfav/${window.localStorage.getItem("userId")}`
-  //     );
-  //     //console.log(response);
-  //     setSavedPosts(response.data.favs);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-  ///// start
-  useEffect(() => {
-    const fetchingArray = async () => {
-      try {
-        // const userId=window.localStorage.getItem("userid");
-        const featuredPostss = await axios.get(
-          `${BASE_URL}/posts/myfav/${window.localStorage.getItem(
-            "userid"
-          )}`
-        );
-        console.log(featuredPostss.data.favs);
-        setfeaturedPosts(featuredPostss.data.favs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchingArray();
-  }, c);
-  //// end
-  // const isPostSaved = (title) => featuredPosts.includes(title);
-
-  // //testing the logic
-  // console.log(isPostSaved('Hello'));
-  ///test number 2
- //checking if post is present in fav post array
-  const isUserPresent = (id) => featuredPosts.some((user) => user._id === id);
-  ///
+  const isUserPresent = (id) => savedPosts.some((user) => user._id === id);
+  
 
   const userId = window.localStorage.getItem("userid");
 
@@ -85,16 +46,37 @@ function SinglePost({ item, home,savedPosts,setc }) {
           userId: userId,
         }
       );
-      setc(c + 1);
-      navigate("/fav");
+
+      
+      //navigate("/fav");
       //setSavedRecipes(response.data.savedRecipes);
       if (response.status === 201) {
-        alert("Post Liked");
+        //alert("Post Liked");
+        console.log(response.data.fav);
+        setSavedPosts(response.data.fav);
+        setc(postID+Math.random());
+
       }
     } catch (err) {
       console.log(err);
     }
   };
+  const unsavePost=async(postID)=>{
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/posts/unsavepost`,
+        {
+          postId: postID,
+          userId: userId,
+        }
+      );
+      setSavedPosts(response.data.fav);
+      setc(postID);
+    } catch (error) {
+      
+    }
+
+  }
 
   return (
     <div className="card">
@@ -123,7 +105,7 @@ function SinglePost({ item, home,savedPosts,setc }) {
           {<FavoriteBorderOutlinedIcon />}
         </div>
       ) : (
-        <div className="white-logo">{<FavoriteIcon />}</div>
+        <div className="white-logo" onClick={()=>unsavePost(item._id)}>{<FavoriteIcon />}</div>
       )}
 
       <div className="author"> ~ by {item.author}</div>

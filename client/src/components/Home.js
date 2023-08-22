@@ -6,6 +6,8 @@ import { Cookies, useCookies } from "react-cookie";
 import { BASE_URL } from "../helper.js";
 import "./Home.css";
 
+import { motion } from "framer-motion";
+
 export default function Home() {
   const [cookies, _] = useCookies("[access_token]");
   const sections = [
@@ -18,16 +20,15 @@ export default function Home() {
   const home = true;
 
   const [savedPosts, setSavedPosts] = useState([]);
-   
-    const fetchFav =  async() => {
-      const userId = window.localStorage.getItem("userid");
-      const favP =  await axios.get(`${BASE_URL}/posts/myfav/${userId}`, {
-        headers: { authorization: cookies.access_token },
-      });
 
-      setSavedPosts(favP.data.favs);
-    };
-    
+  const fetchFav = async () => {
+    const userId = window.localStorage.getItem("userid");
+    const favP = await axios.get(`${BASE_URL}/posts/myfav/${userId}`, {
+      headers: { authorization: cookies.access_token },
+    });
+
+    setSavedPosts(favP.data.favs);
+  };
 
   useEffect(() => {
     const fetchingArray = async () => {
@@ -35,21 +36,16 @@ export default function Home() {
         const featuredPostss = await axios.get(`${BASE_URL}/posts`, {
           headers: { authorization: cookies.access_token },
         });
-        setfeaturedPosts(featuredPostss.data);
+        setfeaturedPosts(featuredPostss.data.slice().reverse());
       } catch (error) {
         console.log(error);
       }
     };
     console.log("qwerty");
-    fetchingArray();
     fetchFav();
+    fetchingArray();
 
-   
-
-
-    return () => {
-    
-    };
+    return () => {};
   }, [c]);
 
   // const isUserPresent =  (id) => {
@@ -57,7 +53,7 @@ export default function Home() {
   // };
 
   return (
-    <>
+    <motion.div initial={{ opacity: 0 }} animate={{opacity:1}} exit={{opacity:0}}>
       <Header title=" Quotes Blog" sections={sections} />
       <div className="flexing-cards">
         {featuredPosts.map((item) => (
@@ -66,10 +62,11 @@ export default function Home() {
             item={item}
             home={home}
             savedPosts={savedPosts}
-            
+            setc={setc}
+            setSavedPosts={setSavedPosts}
           />
         ))}
       </div>
-    </>
+    </motion.div>
   );
 }

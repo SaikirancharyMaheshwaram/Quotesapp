@@ -1,0 +1,11 @@
+.post-box{
+    width: 395px;
+    font-size: larger;
+
+}
+.container{
+    margin-top: 50px;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding-bottom: 50px;
+}

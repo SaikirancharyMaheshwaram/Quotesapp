@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+//import Link from "@mui/material/Link";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
  function Header(props) {
   const { sections, title } = props;
@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
           {title}
         </Typography>
 
-        <Link href="/">
+        <Link  to={"/"}>
           <Button variant="outlined" size="small" onClick={handleLogout}>
             Logout
           </Button>
@@ -44,7 +44,7 @@ import { useNavigate } from "react-router-dom";
         sx={{ justifyContent: "space-evenly", overflowX: "auto" }}
       >
         {sections.map((section) => (
-          <Link key={section.title} href={section.url}>
+          <Link key={section.title} to={section.url}>
             <Button variant="outlined" size="small" color="success">
               {section.title}
             </Button>

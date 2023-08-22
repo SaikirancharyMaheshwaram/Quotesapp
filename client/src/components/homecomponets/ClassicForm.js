@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { useCookies } from 'react-cookie';
 import { BASE_URL } from "../../helper";
+import "./UpdateForm.css"
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -54,10 +55,14 @@ export default function ClassicForm() {
       navigate("/home");
     }
   };
+  const handleCancel=()=>{
+    window.localStorage.removeItem("postId");
+    navigate("/home");
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className="container">
         <CssBaseline />
         <Box
           sx={{
@@ -73,7 +78,6 @@ export default function ClassicForm() {
           </Typography>
           <Box
             component="form"
-            noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
@@ -89,6 +93,7 @@ export default function ClassicForm() {
                   id="firstName"
                   label="Title"
                   autoFocus
+                  
                 />
               </Grid>
 
@@ -103,6 +108,7 @@ export default function ClassicForm() {
                   minRows={8}
                   onChange={handleChange}
                   value={data.post}
+                  className="post-box"
                 />
               </Grid>
             </Grid>
@@ -113,6 +119,9 @@ export default function ClassicForm() {
               sx={{ mt: 3, mb: 2 }}
             >
               Post
+            </Button>
+            <Button variant="contained" fullWidth sx={{ mt: 3, mb: 2 }} onClick={handleCancel}>
+              Cancel
             </Button>
           </Box>
         </Box>

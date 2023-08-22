@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { BASE_URL } from "../../helper";
+import "./UpdateForm.css"
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -19,7 +20,6 @@ const defaultTheme = createTheme();
 
 export default function UpdateForm() {
   const navigate = useNavigate();
-
   const [data, setData] = React.useState({
     title:"",
     post:""
@@ -49,7 +49,7 @@ export default function UpdateForm() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className="container">
         <CssBaseline />
         <Box
           sx={{
@@ -65,7 +65,6 @@ export default function UpdateForm() {
           </Typography>
           <Box
             component="form"
-            noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
@@ -98,6 +97,7 @@ export default function UpdateForm() {
                   onChange={handleChange}
                   value={data.post}
                   placeholder="Enter Description"
+                  className="post-box"
                 /> 
               </Grid>
             </Grid>

@@ -81,20 +81,39 @@ router.get("/myposts/:userid",async(req,res)=>{
 });
 //saving the post
 router.post("/savepost", async (req, res) => {
-  const favpost = await PostModel.findById(req.body.postId);
+  const favpost = await PostModel.findById(req.body.postId); 
   const user = await UserModel.findById(req.body.userId);
   console.log(req.body.postId);
   console.log(req.body.userId);
   try {
     user.fav.push(favpost);
     await user.save();
-    res.status(201).json({ fav: user.fav });
+    res.status(201).json({ fav: user.fav ,user,favpost});
   } catch (err) {
     res.status(500).json("problem");
   }
 });
 //unsaving the post
-router.post("/unsavepost",async)
+router.post("/unsavepost",async(req,res)=>{
+  const favpost = await PostModel.findById(req.body.postId); 
+  const user = await UserModel.findById(req.body.userId);
+
+  try {
+    //user.fav.update({}, {$pull: {_id:favpost._id} });
+    
+    user.fav=user.fav.filter(item => item != req.body.postId);
+    console.log(user.fav);
+    await user.save();
+    res.status(201).json({fav:user.fav,user,favpost});
+    
+  } catch (error) {
+    res.send(error);
+    
+  }
+
+  
+
+})
 
 //getting the saved fav posts
 
